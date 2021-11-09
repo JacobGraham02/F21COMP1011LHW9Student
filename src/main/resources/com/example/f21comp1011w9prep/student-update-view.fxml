@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.f21comp1011w9prep.Controllers.StudentUpdateController">
+    <children>
+        <VBox layoutX="56.0" layoutY="38.0" prefHeight="600.0" prefWidth="800.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <TableView fx:id="tableView" prefHeight="381.0" prefWidth="740.0">
+                    <columns>
+                        <TableColumn fx:id="studentNumCol" prefWidth="112.0" text="Student #" />
+                        <TableColumn fx:id="firstNameCol" prefWidth="150.0" text="First Name" />
+                        <TableColumn fx:id="lastNameCol" prefWidth="150.0" text="Last Name" />
+                        <TableColumn fx:id="avgGradeCol" prefWidth="109.0" text="AVG Grade" />
+                        <TableColumn fx:id="numOfCoursesCol" prefWidth="181.0" text="# of Courses" />
+                    </columns>
+                </TableView>
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Label prefHeight="27.0" prefWidth="143.0" text="Name Search" />
+                        <TextField fx:id="searchTextField" />
+                        <StackPane prefHeight="39.0" prefWidth="451.0">
+                            <children>
+                                <Label id="msgLabel" fx:id="rowsReturnedLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="220.0" text="Rows Returned:" textAlignment="CENTER" />
+                            </children>
+                        </StackPane>
+                    </children>
+                </HBox>
+                <Pane id="addCourse" prefHeight="200.0" prefWidth="200.0">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="136.0" prefWidth="940.0" spacing="20.0">
+                            <children>
+                                <Label id="msgLabel" fx:id="studentSelectedLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="400.0" text="Label" />
+                                <HBox alignment="CENTER" spacing="20.0">
+                                    <children>
+                                        <ComboBox fx:id="coursesComboBox" prefHeight="39.0" prefWidth="192.0" />
+                                        <Spinner fx:id="gradeSpinner" prefHeight="39.0" prefWidth="135.0" />
+                                        <Button fx:id="addCourseButton" mnemonicParsing="false" onAction="#addGrade" text="Add Course" />
+                                    </children>
+                                </HBox>
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </VBox>
+                    </children>
+                </Pane>
+            </children>
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>
