@@ -76,8 +76,19 @@ public class StudentUpdateController implements Initializable {
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         avgGradeCol.setCellValueFactory(new PropertyValueFactory<>("avgGradeString"));
         numOfCoursesCol.setCellValueFactory(new PropertyValueFactory<>("numOfCourses"));
+
+        //set the tableview to only select a single student at a time and add a listener
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, studentSelected)->{
+            if (studentSelected != null)
+            {
+                studentSelectedLabel.setText(studentSelected.toString());
+            }
+        });
+
+        //load the table and the update the labels
         tableView.getItems().addAll(allStudents);
-        rowsReturnedLabel.setText("Students in Table: " + tableView.getItems().size());
+        updateLabels();
 
         //configure the TextField with an event listener to filter the list of students in the tableview
         searchTextField.textProperty().addListener((observable, oldValue, searchText)->{
@@ -90,11 +101,55 @@ public class StudentUpdateController implements Initializable {
             }
             tableView.getItems().clear();
             tableView.getItems().addAll(filtered);
+            updateLabels();
         });
+
+        //configure the RadioButtons and ToggleGroup
+        toggleGroup = new ToggleGroup();
+        allStudentRadioButton.setToggleGroup(toggleGroup);
+        top10RadioButton.setToggleGroup(toggleGroup);
+        honourRollRadioButton.setToggleGroup(toggleGroup);
+        allStudentRadioButton.setSelected(true);
+
+        toggleGroup.selectedToggleProperty().addListener((obs, oldButton, newButton)->{
+            tableView.getItems().clear();
+            if (newButton == honourRollRadioButton)
+            {
+                tableView.getItems().addAll(allStudents.stream()
+                                                    .filter(student -> student.getAvgMark()>=80)
+                                                    .sorted()
+                                                    .collect(Collectors.toList()));
+            }
+            else if (newButton == top10RadioButton)
+            {
+                tableView.getItems().addAll(allStudents.stream()
+                                                        .sorted(Comparator.comparingDouble(Student::getAvgMark).reversed())
+                                                        .limit(10)
+                                                        .collect(Collectors.toList()));
+            }
+            else
+                tableView.getItems().addAll(allStudents);
+            updateLabels();
+        });
+
+        //make the student selected field invisible until a student is selected
+        setAddCourseVisibility(false);
+    }
+
+    /**
+     * This method will update the visibility of the add course features if a student is selected
+     */
+    private void setAddCourseVisibility(boolean visible)
+    {
+        studentSelectedLabel.setVisible(visible);
+        coursesComboBox.setVisible(visible);
+        gradeSpinner.setVisible(visible);
+        addCourseButton.setVisible(visible);
     }
 
     private void updateLabels()
     {
+        rowsReturnedLabel.setText("Students in Table: " + tableView.getItems().size());
     }
 
     @FXML

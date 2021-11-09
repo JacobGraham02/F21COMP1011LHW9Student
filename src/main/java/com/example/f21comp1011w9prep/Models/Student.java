@@ -5,7 +5,7 @@ import com.example.f21comp1011w9prep.Models.Course;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class Student
+public class Student implements Comparable<Student>
 {
     private String firstName, lastName;
     private int studNum;
@@ -143,5 +143,8 @@ public class Student
     }
 
 
-
+    @Override
+    public int compareTo(Student otherStudent) {
+        return Integer.compare(studNum, otherStudent.studNum);
+    }
 }
