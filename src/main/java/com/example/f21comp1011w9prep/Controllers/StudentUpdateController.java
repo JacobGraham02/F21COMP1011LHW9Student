@@ -64,16 +64,33 @@ public class StudentUpdateController implements Initializable {
     private RadioButton top10RadioButton;
 
     private ToggleGroup toggleGroup;
+    private ArrayList<Student> allStudents;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        allStudents = MagicData.getStudents();
 
+        //configure TableView
         studentNumCol.setCellValueFactory(new PropertyValueFactory<>("studNum"));
         firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         avgGradeCol.setCellValueFactory(new PropertyValueFactory<>("avgGradeString"));
         numOfCoursesCol.setCellValueFactory(new PropertyValueFactory<>("numOfCourses"));
+        tableView.getItems().addAll(allStudents);
+        rowsReturnedLabel.setText("Students in Table: " + tableView.getItems().size());
 
+        //configure the TextField with an event listener to filter the list of students in the tableview
+        searchTextField.textProperty().addListener((observable, oldValue, searchText)->{
+            ArrayList<Student> filtered = new ArrayList<>();
+
+            for (Student student : allStudents)
+            {
+                if (student.contains(searchText))
+                    filtered.add(student);
+            }
+            tableView.getItems().clear();
+            tableView.getItems().addAll(filtered);
+        });
     }
 
     private void updateLabels()

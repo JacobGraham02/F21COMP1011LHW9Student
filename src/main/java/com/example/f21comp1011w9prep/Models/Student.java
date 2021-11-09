@@ -5,7 +5,7 @@ import com.example.f21comp1011w9prep.Models.Course;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class Student implements Comparable<Student>
+public class Student
 {
     private String firstName, lastName;
     private int studNum;
@@ -136,14 +136,12 @@ public class Student implements Comparable<Student>
      */
     public boolean contains(String searchText)
     {
-        String studentNumString = Integer.toString(studNum);
         searchText = searchText.toLowerCase();
-        return firstName.toLowerCase().contains(searchText) || lastName.toLowerCase().contains(searchText) ||
-                    studentNumString.contains(searchText);
+        String stNum = Integer.toString(studNum);
+        return firstName.toLowerCase().contains(searchText) || lastName.toLowerCase().contains(searchText)
+                || stNum.contains(searchText);
     }
 
-    @Override
-    public int compareTo(Student o) {
-        return Double.compare(this.getAvgMark(), o.getAvgMark());
-    }
+
+
 }
