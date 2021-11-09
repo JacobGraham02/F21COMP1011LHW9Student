@@ -80,6 +80,7 @@ public class StudentUpdateController implements Initializable {
         //set the tableview to only select a single student at a time and add a listener
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, studentSelected)->{
+            setAddCourseVisibility(studentSelected != null);
             if (studentSelected != null)
             {
                 studentSelectedLabel.setText(studentSelected.toString());
@@ -134,6 +135,25 @@ public class StudentUpdateController implements Initializable {
 
         //make the student selected field invisible until a student is selected
         setAddCourseVisibility(false);
+
+        //configure the combobox with the courses
+        coursesComboBox.getItems().addAll(MagicData.getCourseCodes());
+
+        //configure the spinner object
+        SpinnerValueFactory<Integer> gradeFactory =
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 75);
+        gradeSpinner.setValueFactory(gradeFactory);
+        gradeSpinner.setEditable(true);
+        TextField spinnerEditor = gradeSpinner.getEditor();
+        spinnerEditor.textProperty().addListener((observableValue, oldValue, newValue)->
+        {
+            try {
+                Integer.parseInt(newValue);
+            } catch (NumberFormatException e)
+            {
+                spinnerEditor.setText(oldValue);
+            }
+        });
     }
 
     /**
@@ -149,12 +169,22 @@ public class StudentUpdateController implements Initializable {
 
     private void updateLabels()
     {
+        tableView.refresh();
         rowsReturnedLabel.setText("Students in Table: " + tableView.getItems().size());
     }
 
     @FXML
     private void addGrade()
     {
+        Student student = tableView.getSelectionModel().getSelectedItem();
+        Course course = coursesComboBox.getValue();
+        int grade = gradeSpinner.getValue();
+
+        if (student != null && course != null && grade>=0 && grade <= 100)
+        {
+            student.addCourse(course, grade);
+        }
+        updateLabels();
     }
 
 }
